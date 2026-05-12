@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YOUR NAME — Hardware Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inconsolata:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #f5f3ef;
+      --ink:     #0f0e0c;
+      --muted:   #6b6860;
+      --line:    #d4cfc8;
+      --tag-bg:  #e8e4dc;
+      --serif:   'Playfair Display', Georgia, serif;
+      --mono:    'Inconsolata', 'Courier New', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    ::selection { background: var(--ink); color: var(--bg); }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 4rem;
+      background: rgba(245,243,239,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-name { font-family: var(--serif); font-weight: 700; font-size: 1rem; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--ink); }
+
+    /* Hero */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-left {
+      padding: 10rem 4rem 5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--line);
+      opacity: 0;
+      animation: appear 0.8s 0.1s forwards;
+    }
+    .hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+    .hero-name { font-family: var(--serif); font-size: clamp(2.8rem, 5vw, 5rem); font-weight: 900; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+    .hero-desc { font-size: 0.85rem; color: var(--muted); max-width: 360px; margin-bottom: 2.5rem; line-height: 1.8; }
+    .hero-cta { display: flex; gap: 1rem; }
+    .btn { display: inline-block; padding: 0.65rem 1.5rem; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid var(--ink); background: var(--ink); color: var(--bg); transition: background 0.2s, color 0.2s; cursor: pointer; }
+    .btn:hover { background: var(--bg); color: var(--ink); }
+    .btn-outline { background: transparent; color: var(--ink); }
+    .btn-outline:hover { background: var(--ink); color: var(--bg); }
+    .hero-right {
+      padding: 10rem 4rem 5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      animation: appear 0.8s 0.3s forwards;
+    }
+    .hero-stats { display: flex; flex-direction: column; gap: 2rem; }
+    .stat { padding-bottom: 2rem; border-bottom: 1px solid var(--line); }
+    .stat:last-child { border-bottom: none; padding-bottom: 0; }
+    .stat-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+    .stat-value { font-family: var(--serif); font-size: 1.1rem; font-weight: 700; }
+
+    /* Sections */
+    section { border-bottom: 1px solid var(--line); }
+    .section-inner { display: grid; grid-template-columns: 220px 1fr; }
+    .section-label-col { padding: 4rem; border-right: 1px solid var(--line); }
+    .section-num { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.5rem; }
+    .section-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; line-height: 1.2; }
+    .section-content { padding: 4rem; }
+
+    /* About */
+    .about-text p { color: var(--muted); font-size: 0.88rem; margin-bottom: 1rem; line-height: 1.85; }
+    .about-text p strong { color: var(--ink); font-weight: 500; }
+
+    /* Skills */
+    .skills-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+    .skill-col-title { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--line); }
+    .skill-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .skill-list li { font-size: 0.82rem; color: var(--ink); display: flex; align-items: center; gap: 0.5rem; }
+    .skill-list li::before { content: '—'; color: var(--muted); font-size: 0.7rem; }
+
+    /* Projects */
+    .project-item { padding: 2.5rem 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; }
+    .project-item:first-child { padding-top: 0; }
+    .project-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .project-num { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+    .project-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.2; }
+    .project-desc { font-size: 0.83rem; color: var(--muted); max-width: 500px; line-height: 1.8; margin-bottom: 1.25rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag { font-size: 0.68rem; letter-spacing: 0.06em; padding: 0.2rem 0.6rem; background: var(--tag-bg); color: var(--muted); text-transform: uppercase; }
+    .project-link { align-self: start; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 0.5rem 1rem; white-space: nowrap; transition: border-color 0.2s, color 0.2s; }
+    .project-link:hover { border-color: var(--ink); color: var(--ink); }
+    .project-link::after { content: 'githublink'; }
+
+    /* Contact */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-heading { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 900; line-height: 1.1; margin-bottom: 1rem; }
+    .contact-sub { font-size: 0.83rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+    .contact-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+    .contact-row:first-child { border-top: 1px solid var(--line); }
+    .contact-row-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+    .contact-row-val { font-size: 0.82rem; color: var(--ink); transition: color 0.2s; }
+    .contact-row-val:hover { color: var(--muted); }
+
+    /* Footer */
+    footer { padding: 1.5rem 4rem; display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 7rem 1.5rem 3rem; border-right: none; border-bottom: 1px solid var(--line); }
+      .hero-right { padding: 3rem 1.5rem; }
+      .section-inner { grid-template-columns: 1fr; }
+      .section-label-col { padding: 2rem 1.5rem 1rem; border-right: none; border-bottom: 1px solid var(--line); }
+      .section-content { padding: 2rem 1.5rem; }
+      .skills-cols { grid-template-columns: 1fr; gap: 2rem; }
+      .project-item { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span class="nav-name">YOUR NAME</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Computer Engineering &nbsp;·&nbsp; May 2026</p>
+      <h1 class="hero-name">Kartikee<br>Anant<br>Shukla</h1>
+      <p class="hero-desc">
+Specializing in RTL design, VLSI, and digital systems with a strong focus on designing efficient, synthesizable hardware and understanding end-to-end digital design flows.
+      </p>
+      <div class="hero-cta">
+        <a href="resume.pdf" class="btn" target="_blank">Resume</a>
+        <a href="#projects" class="btn btn-outline">Projects</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stats">
+        <div class="stat">
+          <p class="stat-label">University</p>
+          <p class="stat-value">University of Illinois Chicago (UIC)</p>
+        </div>
+        <div class="stat">
+          <p class="stat-label">Degree</p>
+          <p class="stat-value">B.S. Computer Engineering</p>
+        </div>
+        <div class="stat">
+          <p class="stat-label">Focus Areas</p>
+          <p class="stat-value">RTL Design · VLSI · Digital Systems · Computer Architecture</p>
+        </div>
+        <div class="stat">
+          <p class="stat-label">Status</p>
+          <p class="stat-value">Seeking New Grad Roles — 2026</p>
+        </div>
+        <div class="stat">
+          <p class="stat-label">Location</p>
+          <p class="stat-value">Chicago, Illinois</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="section-label-col">
+        <span class="section-num">01</span>
+        <h2 class="section-title">About</h2>
+      </div>
+      <div class="section-content">
+        <div class="about-text">
+          <p>Computer Engineering student at <strong>University of Illinois Chicago (UIC)</strong>, graduating May 2026, with a strong foundation in hardware design and digital systems. My focus spans RTL design and verification, VLSI, and computer architecture, backed by hands-on Verilog HDL experience in RTL coding and simulation.</p>
+          <p>I have designed and implemented digital systems end-to-end — from writing clean, synthesizable RTL to debugging simulation waveforms and validating logic at the functional level.</p>
+          <p>Beyond hardware, I have contributed to research in neural networks to gain proficiency in <strong>Python, C++, and C</strong>, complementing my hardware work in scripting and system-level thinking.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="section-inner">
+      <div class="section-label-col">
+        <span class="section-num">02</span>
+        <h2 class="section-title">Skills</h2>
+      </div>
+      <div class="section-content">
+        <div class="skills-cols">
+          <div>
+            <p class="skill-col-title">Hardware &amp; RTL</p>
+            <ul class="skill-list">
+              <li>Verilog HDL</li>
+              <li>RTL Design</li>
+              <li>VLSI Design</li>
+              <li>Computer Architecture</li>
+              <li>Digital Logic Design</li>
+            </ul>
+          </div>
+          <div>
+            <p class="skill-col-title">Programming</p>
+            <ul class="skill-list">
+              <li>Python</li>
+              <li>C++</li>
+              <li>C</li>
+            </ul>
+          </div>
+          <div>
+            <p class="skill-col-title">Tools &amp; EDA</p>
+            <ul class="skill-list">
+              <li>ModelSim</li>
+              <li>Cadence Virtuoso</li>
+              <li>Git &amp; Jupyter Notebook</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <div class="section-inner">
+      <div class="section-label-col">
+        <span class="section-num">03</span>
+        <h2 class="section-title">Projects</h2>
+      </div>
+      <div class="section-content">
+
+        <div class="project-item">
+          <div>
+            <p class="project-num">01</p>
+            <h3 class="project-title">8-bit ALU — Verilog HDL</h3>
+            <p class="project-desc">
+              Designed and implemented a fully functional 8-bit ALU in Verilog HDL supporting
+              arithmetic, logical, and shift operations through a modular datapath architecture
+              with a dedicated control unit. Verified using ModelSim simulation with a custom testbench.
+            </p>
+            <div class="project-tags">
+              <span class="tag">Verilog HDL</span>
+              <span class="tag">RTL Design</span>
+              <span class="tag">ModelSim</span>
+              <span class="tag">Digital Logic</span>
+            </div>
+          </div>
+          <a href="https://github.com/YOUR-USERNAME/8-bit-ALU-Verilog" class="project-link" target="_blank">GitHub </a>
+        </div>
+
+        <div class="project-item">
+          <div>
+            <p class="project-num">02</p>
+            <h3 class="project-title">Handwritten Math OCR — Deep Learning</h3>
+            <p class="project-desc">
+              Developed deep learning models for optical character recognition of handwritten
+              mathematical content using PyTorch and TensorFlow. Improved CNN accuracy from
+              88.9% to 96% through iterative experimentation. Fine-tuned Microsoft's TrOCR
+              transformer on a custom dataset and integrated the model into a real-time GUI application.
+            </p>
+            <div class="project-tags">
+              <span class="tag">PyTorch</span>
+              <span class="tag">TensorFlow</span>
+              <span class="tag">TrOCR</span>
+              <span class="tag">Python</span>
+              <span class="tag">Deep Learning</span>
+            </div>
+          </div>
+          <a href="https://github.com/YOUR-USERNAME/handwritten-math-ocr" class="project-link" target="_blank">GitHub </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="section-label-col">
+        <span class="section-num">04</span>
+        <h2 class="section-title">Contact</h2>
+      </div>
+      <div class="section-content">
+        <div class="contact-grid">
+          <div>
+            <h3 class="contact-heading">Let's work<br>together.</h3>
+            <p class="contact-sub">
+              Open to full-time new graduate roles in RTL design, digital design,
+              VLSI, and hardware engineering. Available starting May 2026.
+            </p>
+            <a href="kartikee.shukla@gmail.com" class="btn">Send an Email</a>
+          </div>
+          <div>
+            <div class="contact-row">
+              <span class="contact-row-label">Email</span>
+              <a href="kartikee.shukla@gmail.com" class="contact-row-val">YOUR-EMAIL@example.com</a>
+            </div>
+            <div class="contact-row">
+              <span class="contact-row-label">LinkedIn</span>
+              <a href="www.linkedin.com/in/kartikee-shukla" class="contact-row-val" target="_blank">linkedin.com/in/YOUR-LINKEDIN</a>
+            </div>
+            <div class="contact-row">
+              <span class="contact-row-label">GitHub</span>
+              <a href="https://github.com/Kshukla10" class="contact-row-val" target="_blank">github.com/YOUR-USERNAME</a>
+            </div>
+            <div class="contact-row">
+              <span class="contact-row-label">Resume</span>
+              <a href="resume.pdf" class="contact-row-val" target="_blank">Download PDF</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Kartikee Anant Shukla</span>
+    <span>Computer Engineering · University of Illinois Chicago · May 2026</span>
+  </footer>
+
+</body>
+</html>
